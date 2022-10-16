@@ -24,6 +24,11 @@ class Inventaire
      */
     private $description;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Membre::class, inversedBy="nom")
+     */
+    private $membre;
+
     public function __construct()
     {
         $this->description = new ArrayCollection();
@@ -60,6 +65,18 @@ class Inventaire
                 $description->setInventaire(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMembre(): ?Membre
+    {
+        return $this->membre;
+    }
+
+    public function setMembre(?Membre $membre): self
+    {
+        $this->membre = $membre;
 
         return $this;
     }
