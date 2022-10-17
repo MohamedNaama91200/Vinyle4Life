@@ -18,7 +18,7 @@ class Inventaire
      * @ORM\Column(type="integer")
      */
     private $id;
-
+     
     /**
      * @ORM\OneToMany(targetEntity=Objet::class, mappedBy="inventaire")
      */
@@ -28,6 +28,14 @@ class Inventaire
      * @ORM\ManyToOne(targetEntity=Membre::class, inversedBy="nom")
      */
     private $membre;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Titre;
+
+    
+    
 
     public function __construct()
     {
@@ -77,6 +85,18 @@ class Inventaire
     public function setMembre(?Membre $membre): self
     {
         $this->membre = $membre;
+
+        return $this;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->Titre;
+    }
+
+    public function setTitre(string $Titre): self
+    {
+        $this->Titre = $Titre;
 
         return $this;
     }

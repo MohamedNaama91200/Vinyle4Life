@@ -47,15 +47,16 @@ class Objet
      */
     private $Album;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $Durée;
 
     /**
      * @ORM\ManyToOne(targetEntity=Inventaire::class, inversedBy="description")
      */
     private $inventaire;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Duree;
 
     public function getId(): ?int
     {
@@ -154,6 +155,18 @@ class Objet
     public function setInventaire(?Inventaire $inventaire): self
     {
         $this->inventaire = $inventaire;
+
+        return $this;
+    }
+
+    public function getDuree(): ?string
+    {
+        return $this->Duree;
+    }
+
+    public function setDuree(string $Duree): self
+    {
+        $this->Duree = $Duree;
 
         return $this;
     }
