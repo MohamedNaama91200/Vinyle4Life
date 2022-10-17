@@ -49,7 +49,7 @@ class Objet
 
 
     /**
-     * @ORM\ManyToOne(targetEntity=Inventaire::class, inversedBy="description")
+     * @ORM\ManyToOne(targetEntity=Inventaire::class, inversedBy="objet")
      */
     private $inventaire;
 

@@ -22,7 +22,7 @@ class Inventaire
     /**
      * @ORM\OneToMany(targetEntity=Objet::class, mappedBy="inventaire")
      */
-    private $description;
+    private $objet;
 
     /**
      * @ORM\ManyToOne(targetEntity=Membre::class, inversedBy="nom")
@@ -39,7 +39,7 @@ class Inventaire
 
     public function __construct()
     {
-        $this->description = new ArrayCollection();
+        $this->objet = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -50,27 +50,27 @@ class Inventaire
     /**
      * @return Collection<int, Objet>
      */
-    public function getDescription(): Collection
+    public function getobjet(): Collection
     {
-        return $this->description;
+        return $this->objet;
     }
 
-    public function addDescription(Objet $description): self
+    public function addobjet(Objet $objet): self
     {
-        if (!$this->description->contains($description)) {
-            $this->description[] = $description;
-            $description->setInventaire($this);
+        if (!$this->objet->contains($objet)) {
+            $this->objet[] = $objet;
+            $objet->setInventaire($this);
         }
 
         return $this;
     }
 
-    public function removeDescription(Objet $description): self
+    public function removeobjet(Objet $objet): self
     {
-        if ($this->description->removeElement($description)) {
+        if ($this->objet->removeElement($objet)) {
             // set the owning side to null (unless already changed)
-            if ($description->getInventaire() === $this) {
-                $description->setInventaire(null);
+            if ($objet->getInventaire() === $this) {
+                $objet->setInventaire(null);
             }
         }
 

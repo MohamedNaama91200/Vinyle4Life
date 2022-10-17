@@ -37,8 +37,7 @@ class InventaireCrudController extends AbstractCrudController
             
             // Title will be rendered so as to include a link, and be striked whenever completed
             StringField::new('Titre'),
-            AssociationField::new('[description]')
-            ->onlyOnDetail(),
+            AssociationField::new('objet'),
         ];
     } 
     

@@ -61,7 +61,7 @@ class AppFixtures extends Fixture
         // On peut plutôt faire une référence explicite à la référence
         // enregistrée précédamment, ce qui permet d'éviter de se
         // tromper d'instance de Region :
-        $album->setInventaire($this->getReference(self::Inventaire_I));   
+        $album->addInventaire($this->getReference(self::Inventaire_I));   
         $manager->persist($album);
         $manager->flush();
 
