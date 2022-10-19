@@ -58,6 +58,11 @@ class Objet
      */
     private $Duree;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Inventaire::class, inversedBy="Vinyle")
+     */
+    private $Vinyle;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -170,4 +175,21 @@ class Objet
 
         return $this;
     }
+
+    public function getVinyle(): ?Inventaire
+    {
+        return $this->Vinyle;
+    }
+
+    public function setVinyle(?Inventaire $Vinyle): self
+    {
+        $this->Vinyle = $Vinyle;
+
+        return $this;
+    }
+    public function __toString() : String 
+    {
+        return $this->getTitre();
+    }
+
 }

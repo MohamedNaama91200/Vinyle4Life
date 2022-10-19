@@ -9,6 +9,8 @@ use App\Repository\InventaireRepository;
 use App\Repository\ObjetRepository;
 use app\Entity\Objet;
 use app\Entity\Inventaire;
+use app\Entity\Membre;
+use app\Repository\MembreRepository;
 
 
 
@@ -61,9 +63,24 @@ class AppFixtures extends Fixture
         // On peut plutôt faire une référence explicite à la référence
         // enregistrée précédamment, ce qui permet d'éviter de se
         // tromper d'instance de Region :
-        $album->addInventaire($this->getReference(self::Inventaire_I));   
+        $album->setinventaire($this->getReference(self::Inventaire_I));  
+
         $manager->persist($album);
         $manager->flush();
+
+      /*  $inventaire->addobjet($album);
+        $manager->persist($inventaire);
+        $manager->flush(); */
+        
+        
+        $imad = new Membre();
+        $imad->setname("Imad");
+        $imad->setdescription("Membre très actif");
+        $manager->persist($imad);
+        $manager->flush();
+          
+        
+
 
         
 

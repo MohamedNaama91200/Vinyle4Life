@@ -34,12 +34,18 @@ class Inventaire
      */
     private $Titre;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Objet::class, mappedBy="Vinyle")
+     */
+    private $Vinyle;
+
     
     
 
     public function __construct()
     {
         $this->objet = new ArrayCollection();
+        $this->Vinyle = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -97,6 +103,36 @@ class Inventaire
     public function setTitre(string $Titre): self
     {
         $this->Titre = $Titre;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Objet>
+     */
+    public function getVinyle(): Collection
+    {
+        return $this->Vinyle;
+    }
+
+    public function addVinyle(Objet $vinyle): self
+    {
+        if (!$this->Vinyle->contains($vinyle)) {
+            $this->Vinyle[] = $vinyle;
+            $vinyle->setVinyle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVinyle(Objet $vinyle): self
+    {
+        if ($this->Vinyle->removeElement($vinyle)) {
+            // set the owning side to null (unless already changed)
+            if ($vinyle->getVinyle() === $this) {
+                $vinyle->setVinyle(null);
+            }
+        }
 
         return $this;
     }
