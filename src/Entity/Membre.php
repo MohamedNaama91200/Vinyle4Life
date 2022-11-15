@@ -34,6 +34,11 @@ class Membre
      */
     private $description;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Galerie::class, inversedBy="createur")
+     */
+    private $galerie;
+
     public function __construct()
     {
         $this->nom = new ArrayCollection();
@@ -97,4 +102,24 @@ class Membre
 
         return $this;
     }
+
+    public function getGalerie(): ?Galerie
+    {
+        return $this->galerie;
+    }
+
+    public function setGalerie(?Galerie $galerie): self
+    {
+        $this->galerie = $galerie;
+
+        return $this;
+    }
+    public function __toString() 
+    {
+        $s = '';
+        $s .= $this->getName() ;
+
+        return $s;
+    }
+
 }

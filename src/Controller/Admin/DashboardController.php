@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Membre;
 use App\Entity\Objet;
+use App\Entity\Galerie;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -38,6 +39,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Membre', 'fas fa-list', Membre::class);
         yield MenuItem::linkToCrud('Objet', 'fas fa-list', Objet::class);
+        yield MenuItem::linkToCrud('Galerie', 'fas fa-list', Galerie::class);
+
 
 
     }

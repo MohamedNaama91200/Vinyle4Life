@@ -136,4 +136,23 @@ class Inventaire
 
         return $this;
     }
+
+    /**
+     * @param number $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+    /**
+     * @return string
+     */
+    public function __toString() 
+    {
+        $s = '';
+        $s .= $this->getId() .' '. $this->getTitre() .' ';
+
+        return $s;
+    }
+
 }

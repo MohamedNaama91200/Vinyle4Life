@@ -36,7 +36,27 @@ class ObjetCrudController extends AbstractCrudController
             TextField::new('Album'),
             TextField::new('Duree'),
             AssociationField::new('inventaire'),
+            AssociationField::new('style') // remplacer par le nom de l'attribut spécifique, par exemple 'bodyShape'
+            ->onlyOnDetail()
+            ->formatValue(function ($value, $entity) {
+            return implode(', ', $entity->getStyle()->toArray()); // ici getBodyShapes()
+
+        }),
+            AssociationField::new('format') // remplacer par le nom de l'attribut spécifique, par exemple 'bodyShape'
+            ->onlyOnDetail()
+            ->formatValue(function ($value, $entity) {
+            return implode(', ', $entity->getFormat()->toArray()); // ici getBodyShapes()
+            
+        })
         ];
     }
+    public function configureActions(Actions $actions): Actions
+    {
+        // For whatever reason show isn't in the menu, bu default
+        return $actions
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+        ;
+    }
+
     
 }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ObjetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -62,6 +64,30 @@ class Objet
      * @ORM\ManyToOne(targetEntity=Inventaire::class, inversedBy="Vinyle")
      */
     private $Vinyle;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Format::class, inversedBy="objets")
+     */
+    private $format;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Style::class, inversedBy="objets")
+     */
+    private $style;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Galerie::class, mappedBy="objet")
+     */
+    private $galeries;
+
+    public function __construct()
+    {
+        $this->format = new ArrayCollection();
+        $this->style = new ArrayCollection();
+        $this->galeries = new ArrayCollection();
+    }
+
+  
 
     public function getId(): ?int
     {
@@ -189,7 +215,84 @@ class Objet
     }
     public function __toString() : String 
     {
-        return $this->getTitre();
+        return $this->getTitre() . ' : ' . $this->getAlbum();
     }
+
+    /**
+     * @return Collection<int, Format>
+     */
+    public function getFormat(): Collection
+    {
+        return $this->format;
+    }
+
+    public function addFormat(Format $format): self
+    {
+        if (!$this->format->contains($format)) {
+            $this->format[] = $format;
+        }
+
+        return $this;
+    }
+
+    public function removeFormat(Format $format): self
+    {
+        $this->format->removeElement($format);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Style>
+     */
+    public function getStyle(): Collection
+    {
+        return $this->style;
+    }
+
+    public function addStyle(Style $style): self
+    {
+        if (!$this->style->contains($style)) {
+            $this->style[] = $style;
+        }
+
+        return $this;
+    }
+
+    public function removeStyle(Style $style): self
+    {
+        $this->style->removeElement($style);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Galerie>
+     */
+    public function getGaleries(): Collection
+    {
+        return $this->galeries;
+    }
+
+    public function addGalery(Galerie $galery): self
+    {
+        if (!$this->galeries->contains($galery)) {
+            $this->galeries[] = $galery;
+            $galery->addObjet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGalery(Galerie $galery): self
+    {
+        if ($this->galeries->removeElement($galery)) {
+            $galery->removeObjet($this);
+        }
+
+        return $this;
+    }
+   
+
 
 }

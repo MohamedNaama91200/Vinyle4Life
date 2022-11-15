@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Welcome!{% endblock %}
+{% block title %}Galerie index{% endblock %}
+
+
 
 {% block body %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -24,34 +26,41 @@
                 </div>
             </div>
         </nav>
-<h1>Index des inventaires de Vinyles</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Titre</th>
-            <th> Actions </th>
-            
-        </tr>
-    </thead>
-    <tbody>
-     
+    <h1>Galerie index</h1>
 
-  {% for i in inventaire %} 
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Publiee</th>
+                <th>Créateur</th>
+                <th>Vinyle</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for galerie in galerie %}
+            <tr>
+                <td>{{ galerie.id }}</td>
+                <td>{{ galerie.description }}</td>
+                <td>{{ galerie.publiee ? 'Yes' : 'No' }}</td>
+                
+                {%  for objet in  galerie.objet %}
+                   <td> {{objet}} </td>
+                {% endfor %}
+                <td>
+                    <a href="{{ path('app_galerie_show', {'id': galerie.id}) }}">show</a>
+                    <a href="{{ path('app_galerie_edit', {'id': galerie.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-        <tr>
-            <td>{{ i.id }}</td>
-            <td>{{ i.Titre }}</td>
-            <td><a href="{{ path('inventaire_show', {'id': i.id}) }}">show</a></td>
-
-
-            
-        </tr>
-
-    {% endfor %} {# inventaire #}
-
-    </tbody>
-</table>
-
-{% endblock %} {# body #}
-
+    <a href="{{ path('app_galerie_new') }}">Create new</a>
+{% endblock %}
