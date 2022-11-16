@@ -10,11 +10,14 @@ use App\Repository\ObjetRepository;
 use app\Entity\Objet;
 use app\Entity\Inventaire;
 use app\Entity\Galerie;
+use app\Entity\User;
+use app\Entity\UserRepository;
 
 use app\Entity\Membre;
 use app\Entity\Format;
 use app\Entity\Style;
 use app\Repository\MembreRepository;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 
 
@@ -28,8 +31,7 @@ use app\Repository\MembreRepository;
 
 
 
-
-class AppFixtures extends Fixture
+class AppFixtures extends Fixture implements DependentFixtureInterface
 {
     // définit un nom de référence pour une instance de Region
     public const Inventaire_I = 'Inventaire de Imad';
@@ -91,8 +93,13 @@ class AppFixtures extends Fixture
         $imad = new Membre();
         $imad->setname("Imad");
         $imad->setDescription("Membre très actif");
+        $imad->addNom($inventaire);
         $manager->persist($imad);
         $manager->flush();
+        
+       $inventaire->setMembre($imad);
+       $manager->persist($inventaire);
+       $manager->flush();
         
        $lp = new Format();
        $lp->setLabel("LP");
@@ -160,8 +167,31 @@ class AppFixtures extends Fixture
        $manager->persist($galerie);
        $manager->flush();
 
+       $alum = new Objet();
+        
+       $alum->setDescription("très mauvais ");
+       $alum->setTitre("En Y");
+       $alum->setNbDeTours(33);
+       $alum->setNeuf(True);
+       $alum->setAnnee(2015);
+       $alum->setAlbum("My World");
+       $alum->setDuree("2m04");
 
+       $manager->persist($alum);
+       $manager->flush();
 
+       foreach (self::MembreDataGenerator() as [$name, $useremail] ) {
+        $member = new Membre();
+        if ($useremail) {
+            $user = $manager->getRepository(User::class)->findOneByEmail($useremail);
+            $member->setUser($user);
+        }
+        $member->setName($name);
+        $manager->persist($member);
+    }
+    $manager->flush();
+      
+       
 
 
 
@@ -183,6 +213,15 @@ class AppFixtures extends Fixture
 
         //..
     }
+
+    public function getDependencies()
+    {
+        return [
+            UserFixtures::class,
+        ];
+    }
+    
+  
 
     //...
 }

@@ -4,10 +4,15 @@
 namespace App\Controller;
 
 use App\Entity\Inventaire;
+use App\Form\InventaireType;
+use App\Repository\InventaireRepository;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class InventaireController extends AbstractController
 { 
@@ -62,8 +67,6 @@ class InventaireController extends AbstractController
  *    
  * @param Integer $id
  */
-
-
 public function showAction(Inventaire $inventaire): Response
  {
      return $this->render('inventaire/show.html.twig',
@@ -73,14 +76,27 @@ public function showAction(Inventaire $inventaire): Response
  /**
  * @Route("/new/{id}", name="app_inventaire_new", methods={"GET", "POST"}, requirements={"id"="\d+"})
  */
-public function new(Request $request, InventaireRepository $inventaireRepository, Membre $membre): Response
-{
-    $inventaire = new Inventaire();
-    $inventaire->setMembre($membre);
+public function new(Request $request, InventaireRepository $inventaireRepository): Response
+    {
+        $inventaire = new Inventaire();
+        $form = $this->createForm(InventaireType::class, $inventaire);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $inventaireRepository->add($inventaire, true);
+             // Make sure message will be displayed after redirect
+         $this->addFlash('message', 'bien ajouté');
+         // $this->addFlash() is equivalent to $request->getSession()->getFlashBag()->add()
+         // or to $this->get('session')->getFlashBag()->add();
 
 
-    
+            return $this->redirectToRoute('app_inventaire_index', [], Response::HTTP_SEE_OTHER);
+        }
 
-}
+        return $this->renderForm('inventaire/new.html.twig', [
+            'inventaire' => $inventaire,
+            'form' => $form,
+        ]);
+    }
 }
 
