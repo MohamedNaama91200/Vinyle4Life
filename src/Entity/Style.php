@@ -150,7 +150,7 @@ class Style
     public function __toString() 
     {
         $s = '';
-        $s .= $this->getLabel() .' '. $this->getDescription() .' ';
+        $s .= $this->getDescription() .' ';
 
         return $s;
     }

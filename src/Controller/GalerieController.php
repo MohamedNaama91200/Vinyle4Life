@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Galerie;
+use App\Entity\Objet;
+
 use App\Form\GalerieType;
 use App\Repository\GalerieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * @Route("/galerie")
@@ -94,6 +97,29 @@ class GalerieController extends AbstractController
             'form' => $form,
         ]);
     }
+    /**
+ * @Route("/{galerie_id}/objet/{objet_id}", name="app_galerie_objet_show", methods={"GET"})
+ * @ParamConverter("galerie", options={"id" = "galerie_id"})
+ * @ParamConverter("objet", options={"id" = "objet_id"})
+ */
+
+
+
+public function objetShow(Galerie $galerie, Objet $objet): Response
+{
+    if(! $galerie->getObjet()->contains($objet)) {
+        throw $this->createNotFoundException("Le vinyle que vous cherchez n'est pas dans la gallerie!");
+    }
+
+    if(! $galerie->isPubliee()) {
+        throw $this->createAccessDeniedException("Cette galerie n'est pas publiée!");
+    }
+
+    return $this->render('galerie/objet_show.html.twig', [
+        'objet' => $objet,
+          'galerie' => $galerie
+      ]);
+}
      
     
 

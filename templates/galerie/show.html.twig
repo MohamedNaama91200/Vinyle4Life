@@ -20,17 +20,27 @@
                 <td>{{ galerie.publiee ? 'Yes' : 'No' }}</td>
             </tr>
             
-                <th>Vinyle</th>
-                {% for v in galerie.objet %}
-                    <td> {{v}} </td>
+                <th>Createur</th>
+                {% for c in galerie.createur %}
+                    <td> {{c}} </td>
                 {% endfor %}            
             </tr>
+    
+            <h2>Vinyles</h2>
+            <ul>
+               {% for objet in galerie.objet %}
+                 <li> <a href="{{ path('app_galerie_objet_show', {'galerie_id': galerie.id, 'objet_id' : objet.id}) }}">{{ objet }}</a>
+                  </li>
+                {% endfor %}
+            </ul>
+
+
             
 
         </tbody>
     </table>
 
-    <a href="{{ path('app_galerie_index') }}">back to list</a>
+    <a href="{{ path('app_galerie_index') }}">back to galerie</a>
 
     <a href="{{ path('app_galerie_edit', {'id': galerie.id}) }}">edit</a>
 

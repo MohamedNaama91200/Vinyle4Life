@@ -70,8 +70,17 @@ public function showAction(Inventaire $inventaire): Response
      [ 'inventaire' => $inventaire ]
      );
  }
+ /**
+ * @Route("/new/{id}", name="app_inventaire_new", methods={"GET", "POST"}, requirements={"id"="\d+"})
+ */
+public function new(Request $request, InventaireRepository $inventaireRepository, Membre $membre): Response
+{
+    $inventaire = new Inventaire();
+    $inventaire->setMembre($membre);
+
 
     
 
+}
 }
 

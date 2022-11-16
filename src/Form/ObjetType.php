@@ -2,26 +2,35 @@
 
 namespace App\Form;
 
-use App\Entity\Galerie;
+use App\Entity\Objet;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class GalerieType extends AbstractType
+class ObjetType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('description')
-            ->add('publiee')
-            ->add('objet')
+            ->add('Titre')
+            ->add('Nb_de_tours')
+            ->add('Neuf')
+            ->add('Annee')
+            ->add('Album')
+            ->add('Duree')
+            ->add('inventaire')
+            ->add('Vinyle')
+            ->add('format')
+            ->add('style')
+            ->add('galeries')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Galerie::class,
+            'data_class' => Objet::class,
         ]);
     }
 }

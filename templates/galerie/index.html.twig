@@ -34,9 +34,10 @@
                 <th>Id</th>
                 <th>Description</th>
                 <th>Publiee</th>
-                <th>Créateur</th>
-                <th>Vinyle</th>
-                <th>actions</th>
+                <th>Createur</th>
+                <th> &nbsp; </th>
+                <th>Vinyles</th>
+
             </tr>
         </thead>
         <tbody>
@@ -45,7 +46,11 @@
                 <td>{{ galerie.id }}</td>
                 <td>{{ galerie.description }}</td>
                 <td>{{ galerie.publiee ? 'Yes' : 'No' }}</td>
-                
+                {%  for c in  galerie.createur %}
+                   <td> {{c}} </td>
+                {% endfor %}
+                <td>
+
                 {%  for objet in  galerie.objet %}
                    <td> {{objet}} </td>
                 {% endfor %}

@@ -152,7 +152,7 @@ class AppFixtures extends Fixture
        $manager->flush();
 
        $galerie = new Galerie();
-       $galerie->setpubliee(True);
+       $galerie->setpubliee(False);
        $galerie->setDescription("Ma collec' de Vinyles");
        $galerie->addCreateur($imad);
        $galerie->addObjet($album);

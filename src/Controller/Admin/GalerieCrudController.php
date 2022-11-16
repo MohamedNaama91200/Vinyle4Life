@@ -36,10 +36,10 @@ class GalerieCrudController extends AbstractCrudController
         ->onlyOnForms()
         ->hideWhenCreating(),
         TextField::new('description'),
-        AssociationField::new('album')
+        AssociationField::new('objet')
         ->onlyOnDetail()
-        ->setTemplatePath('admin/fields/inventaire_objet.html.twig')     
-        ->onlyOnForms()
+        ->setTemplatePath('admin/fields/galerie_objet.html.twig')     
+        /*->onlyOnForms()
         // on ne souhaite pas gérer l'association entre les
         // [objets] et la [galerie] dès la crétion de la
         // [galerie]
@@ -62,8 +62,8 @@ class GalerieCrudController extends AbstractCrudController
             return $queryBuilder;
             }
            ),
-    ];
-    }
+    ]; */ ] ; }
+    
     public function configureActions(Actions $actions): Actions
     {
         // For whatever reason show isn't in the menu, bu default
