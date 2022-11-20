@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Galerie;
 use App\Repository\GalerieRepository;
-use App\Repository\ObjetRepository;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

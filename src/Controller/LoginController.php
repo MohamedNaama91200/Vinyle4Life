@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Controller;
+use App\Form\GalerieType;
+use App\Repository\GalerieRepository;
+
+use App\Entity\Galerie;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,9 +35,12 @@ class LoginController extends AbstractController
 public function logout()
 {
      // controller can be blank: it will never be called!
-     dump("logout");
+    // dump("logout");
      // throw new \Exception('Don\'t forget to activate logout in security.yaml');
-     return new Response();
+     //return new Response();
+     return $this->render('galerie/index.html.twig', [
+        'galerie' => $galerieRepository->findAll(),
+    ]);
 }
 
 }

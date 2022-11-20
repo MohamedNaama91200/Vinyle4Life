@@ -57,18 +57,15 @@ class UserFixtures extends Fixture
             'mohamed',
             'ROLE_ADMIN'
         ];
-        foreach (self::MembreDataGenerator() as [$name, $useremail] ) {
-            $membre = new Membre();
-            if ($useremail) {
-                $user = $manager->getRepository(User::class)->findOneByEmail($useremail);
-                $membre->setUser($user);
-            }
-            $membre->setName($name);
-            $manager->persist($membre);
-        }
-        $manager->flush();
-        
+        yield [
+            'imad@localhost',
+            'imad',
+            'ROLE_USER'
+        ];
+
+       
         
         
     }
+    
 }

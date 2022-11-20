@@ -23,22 +23,72 @@ class GalerieController extends AbstractController
      */
     public function index(GalerieRepository $galerieRepository): Response
     {
-        return $this->render('galerie/index.html.twig', [
+        if($this->isGranted('ROLE_ADMIN'))
+        {
+             return $this->render('galerie/index.html.twig', [
             'galerie' => $galerieRepository->findAll(),
-        ]);
+        ]);}
+        else {
+            $privateGalleries = array();
+            $user = $this->getUser();
+            if($user) {
+                $membre = $user->getMembre();
+                $privateGalleries = $galerieRepository->findBy(
+        [
+              'publiee' => false,
+              'creator' => $membre
+        ]);}
+            $publicgallerie = array();
+            $publicgallerie = $galerieRepository->findBy(
+                [
+                      'publiee' => true
+                ]);
+            $galleries = array_merge($publicgallerie, $privateGalleries );
+            
+     
+             return  $this->render('galerie/index.html.twig', [
+              'galerie' => $galleries]);
+
+
+
+        }
     }
+        
+    
 
 
 
     /**
      * @Route("/{id}", name="app_galerie_show", methods={"GET"},requirements={"id":"\d+"})
      */
-    public function show(Galerie $galerie): Response
-    {
-        return $this->render('galerie/show.html.twig', [
-            'galerie' => $galerie,
-        ]);
+   /**
+ * @Route("/{id}", name="app_galerie_show", methods={"GET"})
+ */
+public function show(Galerie $galerie): Response
+{
+    $hasAccess = false;
+    if($galerie->isPubliee()) {
+        $hasAccess = true;
     }
+    else {
+            
+            if ( $this->getUser()->getMembre() == $galerie->getCreator() ) {
+
+                $hasAccess = true;
+            }
+            else {
+                $hasAccess = false;
+            }
+        }
+    
+    if(! $hasAccess) {
+        throw $this->createAccessDeniedException("Tu ne peux pas acceder à cette ressource!");
+    }
+    return $this->render('galerie/show.html.twig', [
+        'galerie'=> $galerie,
+    ]);
+}
+
 
     /**
      * @Route("/{id}/edit", name="app_galerie_edit", methods={"GET", "POST"},requirements={"id":"\d+"})
@@ -114,6 +164,7 @@ public function objetShow(Galerie $galerie, Objet $objet): Response
     if(! $galerie->isPubliee()) {
         throw $this->createAccessDeniedException("Cette galerie n'est pas publiée!");
     }
+    
 
     return $this->render('galerie/objet_show.html.twig', [
         'objet' => $objet,

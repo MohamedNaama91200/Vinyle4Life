@@ -34,11 +34,18 @@ class InventaireRepository extends ServiceEntityRepository
 
     public function remove(Inventaire $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
+        $objetRepository = $this->getEntityManager()->getRepository(Objet::class);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+    // clean the [objets] properly
+    $objets = $entity->getobjet();
+    foreach($objets as $objet) {
+        $objetRepository->remove($objet, $flush);
+    }
+    $this->getEntityManager()->remove($entity);
+
+    if ($flush) {
+        $this->getEntityManager()->flush();
+    }
     }
 
 //    /**

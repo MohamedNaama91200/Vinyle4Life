@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
+{% set urgents = app.session.get('urgents') %}
+{% dump(urgents) %}
 
-{% block title %} Vinyles {% endblock %}
+{% block title %}Vinyles {% endblock %}
 
 {% block body %}
 
@@ -17,15 +19,18 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="/login">Se connecter</a></li>
                                 <li><a class="dropdown-item" href="/logout">Se déconnecter</a></li>
+                                <li><a class="dropdown-item" href="/logout">Mon profil</a></li>
+                                 <li><a class="dropdown-item" href="/objet/panier">Mon panier</a></li>
+
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#">Mon panier</a></li>
+                                <li><a class="dropdown-item" href="#">S'inscrire</a></li>
                             </ul>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-    <h1>Objet </h1>
+    <h1>Mon panier </h1>
 
     <table class="table">
         <thead>
@@ -45,6 +50,8 @@
         </thead>
         <tbody>
         {% for objet in objet %}
+            {% if objet.id in urgents %}
+
             <tr>
                 <td>{{ objet.id }}</td>
                 <td>{{ objet.description }}</td>
@@ -63,11 +70,15 @@
                     <a href="{{ path('app_objet_edit', {'id': objet.id}) }}">edit</a>
                 </td>
             </tr>
+            {% endif %}
+
         {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
+        <tr>
+            <td colspan="9">no records found</td>
+        
         {% endfor %}
+    
+            </tr>   
         </tbody>
     </table>
 

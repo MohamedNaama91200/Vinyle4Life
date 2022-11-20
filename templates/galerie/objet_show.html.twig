@@ -53,7 +53,11 @@
     </table>
 
      <a href="{{ path('app_galerie_show', { 'id': galerie.id}) }}">back to galerie</a>
+     {% if is_granted('ROLE_USER') %}
     <a href="{{ path('app_objet_edit', {'id': objet.id}) }}">edit</a>
+     {% endif %}
+     <a href="{{ path('objet_mark', {'id': objet.id}) }}">Ajouter au panier</a>
+
 
     {{ include('objet/_delete_form.html.twig') }}
 {% endblock %}

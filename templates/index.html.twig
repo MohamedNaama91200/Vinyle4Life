@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Welcome!{% endblock %}
 
 {% block body %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -8,55 +7,41 @@
                 <a class="navbar-brand" href="#">Start Bootstrap</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+               {{ render_bootstrap_menu('main') }}
+          {% if app.user %}
+               {{ render_bootstrap_menu('account') }}
+          {% else %}
+               {{ render_bootstrap_menu('anonymousaccount') }}
+          {% endif %}
+     </ul>
+</div>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/galerie">Galeries</a></li>
                         <li class="nav-item"><a class="nav-link" href="/admin">Admin</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Mon profil</a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="/login">Se connecter</a></li>
                                 <li><a class="dropdown-item" href="/logout">Se déconnecter</a></li>
-                                 <li><a class="dropdown-item" href="objet/panier">Mon panier</a></li>
+                                 <li><hr class="dropdown-divider" /></li>
 
-                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="/objet/panier">Mon panier</a></li>
+
                             </ul>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-<h1>Index des inventaires de Vinyles</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Titre</th>
-            <th> Actions </th>
-            
-        </tr>
-    </thead>
-    <tbody>
-     
-
-  {% for i in inventaire %} 
-
-        <tr>
-            <td>{{ i.id }}</td>
-            <td>{{ i.Titre }}</td>
-            <td><a href="{{ path('inventaire_show', {'id': i.id}) }}">show</a></td>
-            {% if is_granted('ROLE_USER') %}
-           <td> <a href="{{ path('app_inventaire_edit', {'id': i.id}) }}">edit</a> </td>
-            {% endif %}
 
 
+{% block main %}
 
-            
-        </tr>
+<h1>Vinyle4Life</h1>
 
-    {% endfor %} {# inventaire #}
-
-    </tbody>
-</table>
+    <p>{{ welcome }}</p>
+    
+{% endblock %} {# main #}
 
 {% endblock %} {# body #}
-

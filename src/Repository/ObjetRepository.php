@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Objet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Membre;
+use App\Repository\MembreRepository;
 
 /**
  * @extends ServiceEntityRepository<Objet>
@@ -38,6 +40,20 @@ class ObjetRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    /**
+ * @return Objet[] Returns an array of Objet objects for a member
+ */
+ public function findMembreObjet(Membre $membre): array
+ {
+     return $this->createQueryBuilder('o')
+          ->leftJoin('o.inventaire', 'i')
+          ->andWhere('i.membre = :membre')
+          ->setParameter('membre', $membre)
+          ->getQuery()
+          ->getResult()
+      ;
+ }
+ 
 
 //    /**
 //     * @return Objet[] Returns an array of Objet objects

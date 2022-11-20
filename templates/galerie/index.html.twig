@@ -14,19 +14,19 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="/admin">Admin</a></li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Mon profil</a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="/login">Se connecter</a></li>
+                                <li><a class="dropdown-item" href="/logout">Se déconnecter</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li><a class="dropdown-item" href="objet/panier">Mon panier</a></li>
                             </ul>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-    <h1>Galerie index</h1>
+    <h1>Galerie</h1>
 
     <table class="table">
         <thead>
@@ -34,29 +34,28 @@
                 <th>Id</th>
                 <th>Description</th>
                 <th>Publiee</th>
-                <th>Createur</th>
-                <th> &nbsp; </th>
+                <th>Créateur</th>
                 <th>Vinyles</th>
+                <th> &nbsp; </th>
 
             </tr>
         </thead>
         <tbody>
-        {% for galerie in galerie %}
+        {% for g in galerie %}
             <tr>
-                <td>{{ galerie.id }}</td>
-                <td>{{ galerie.description }}</td>
-                <td>{{ galerie.publiee ? 'Yes' : 'No' }}</td>
-                {%  for c in  galerie.createur %}
-                   <td> {{c}} </td>
-                {% endfor %}
-                <td>
+                <td>{{ g.id |default('Your default value here') }}</td>
+                <td>{{ g.description }}</td>
+                <td>{{ g.publiee ? 'Yes' : 'No' }}</td>
+                 <td>{{ g.creator }}</td>
 
-                {%  for objet in  galerie.objet %}
-                   <td> {{objet}} </td>
-                {% endfor %}
-                <td>
-                    <a href="{{ path('app_galerie_show', {'id': galerie.id}) }}">show</a>
-                    <a href="{{ path('app_galerie_edit', {'id': galerie.id}) }}">edit</a>
+               
+
+             <td>   {%  for objet in  g.objet %}
+                    {{objet}} 
+                {% endfor %} <td>
+                
+                 <td>   <a href="{{ path('app_galerie_show', {'id': g.id}) }}">show</a>
+                    <a href="{{ path('app_galerie_edit', {'id': g.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

@@ -4,27 +4,46 @@ namespace App\Controller;
 
 use App\Entity\Objet;
 use App\Form\ObjetType;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Repository\ObjetRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
+ * 
  * @Route("/objet")
+ * @IsGranted("IS_AUTHENTICATED_FULLY")
  */
 class ObjetController extends AbstractController
 {
-    /**
-     * @Route("/", name="app_objet_index", methods={"GET"})
-     */
-    public function index(ObjetRepository $objetRepository): Response
-    {
-        return $this->render('objet/index.html.twig', [
-            'objets' => $objetRepository->findAll(),
-        ]);
+   /**
+ * @Route("/", name="app_objet_index", methods={"GET"})
+ */
+public function index(ObjetRepository $objetRepository): Response
+{
+    if ($this->isGranted('ROLE_ADMIN')) {
+
+    return $this->render('objet/index.html.twig', [
+        'objet' => $objetRepository->findAll(),
+    ]);
     }
+    else {
+        $membre = $this->getUser()->getMembre();
+        $objet = $objetRepository->findMembreObjet($membre);
+
+    return $this->render('objet/index.html.twig', [
+        'objet' => $objet
+    ]);
+    }
+
+}
+
 
     /**
      * @Route("/new", name="app_objet_new", methods={"GET", "POST"})
@@ -88,4 +107,61 @@ class ObjetController extends AbstractController
 
         return $this->redirectToRoute('app_objet_index', [], Response::HTTP_SEE_OTHER);
     }
+        /**
+ * Mark a task as current priority in the user's session
+ * 
+ * @Route("/mark/{id}", name="objet_mark", requirements={ "id": "\d+"}, methods="GET")
+ */
+public function markAction(Request $request, Objet $objet): Response
+{
+    
+         // ...
+    
+         // Récupération du tableau d'id urgents dans la session
+         $urgents = $request->getSession()->get('urgents');
+         $id = $objet->getID('id');
+         // si l'identifiant n'est pas présent dans le tableau des urgents, l'ajouter
+         if (! is_array($urgents) ) 
+         {
+              $urgents[] = $id;
+
+                                   }
+
+        if (! in_array($id, $urgents) ) 
+{
+    $urgents[] = $id;
+}
+        else
+// sinon, le retirer du tableau
+{
+    $urgents = array_diff($urgents, array($id));
+}
+         
+
+    
+         // ...
+    
+         // Sauvegarde du tableau d'id urgents dans la session
+         $request->getSession()->set('urgents', $urgents);
+
+       dump($objet);
+        return $this->redirectToRoute('app_objet_show', 
+        ['id' => $objet->getId()]);
+    
+         // ...
+        }
+
+   
+    /**
+     * @Route("/panier", name="objet_panier", methods="GET")
+     */
+    public function panier(ObjetRepository $objetRepository): Response
+    {
+        return $this->render('objet/panier.html.twig', [
+            'objet' => $objetRepository->findAll(),
+        ]);
+    }
+
+
+    
 }

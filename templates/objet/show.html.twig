@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
+{% set urgents = app.session.get('urgents') %}
+{% dump(urgents) %}
 
-{% block title %}Objet{% endblock %}
+{% block title %} Vinyle {% endblock %}
 
 {% block body %}
-    <h1>Objet</h1>
+    <h1>Vinyle</h1>
 
     <table class="table">
         <tbody>
@@ -51,10 +53,18 @@
 
         </tbody>
     </table>
+        
+
 
     <a href="{{ path('app_galerie_index') }}">back to galerie</a>
 
+     {% if is_granted('ROLE_USER') %}
     <a href="{{ path('app_objet_edit', {'id': objet.id}) }}">edit</a>
+     {% endif %}
+
+     <a href="{{ path('objet_mark', {'id': objet.id}) }}">Ajouter au panier</a>
+
 
     {{ include('objet/_delete_form.html.twig') }}
+
 {% endblock %}

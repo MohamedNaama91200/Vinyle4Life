@@ -34,14 +34,29 @@ class Membre
      */
     private $description;
 
+    
+   // private $galerie;
+
     /**
-     * @ORM\ManyToOne(targetEntity=Galerie::class, inversedBy="createur")
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
      */
-    private $galerie;
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Galerie::class, mappedBy="creator")
+     */
+    private $showroom;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Objet::class, mappedBy="vinyles")
+     */
+    private $objets;
 
     public function __construct()
     {
         $this->nom = new ArrayCollection();
+        $this->showroom = new ArrayCollection();
+        $this->objets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,24 +117,114 @@ class Membre
 
         return $this;
     }
-
-    public function getGalerie(): ?Galerie
+    
+  /*  /**
+     * @return Collection<int, Galerie>
+     */
+   /* public function getGalerie(): Collection
     {
         return $this->galerie;
     }
 
-    public function setGalerie(?Galerie $galerie): self
+    public function addGalerie(Galerie $galerie): self
     {
-        $this->galerie = $galerie;
+        if (!$this->galerie->contains($galerie)) {
+            $this->galerie[] = $galerie;
+            $galerie->setCreateur($this);
+        }
 
         return $this;
     }
+
+    public function removeGalerie(Galerie $galerie): self
+    {
+        if ($this->galerie->removeElement($galerie)) {
+            // set the owning side to null (unless already changed)
+            if ($galerie->getCreateur() === $this) {
+                $galerie->setCreateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    */
+    
     public function __toString() 
     {
         $s = '';
         $s .= $this->getName() ;
 
         return $s;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Galerie>
+     */
+    public function getShowroom(): Collection
+    {
+        return $this->showroom;
+    }
+
+    public function addShowroom(Galerie $showroom): self
+    {
+        if (!$this->showroom->contains($showroom)) {
+            $this->showroom[] = $showroom;
+            $showroom->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShowroom(Galerie $showroom): self
+    {
+        if ($this->showroom->removeElement($showroom)) {
+            // set the owning side to null (unless already changed)
+            if ($showroom->getCreator() === $this) {
+                $showroom->setCreator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Objet>
+     */
+    public function getObjets(): Collection
+    {
+        return $this->objets;
+    }
+
+    public function addObjet(Objet $objet): self
+    {
+        if (!$this->objets->contains($objet)) {
+            $this->objets[] = $objet;
+            $objet->addVinyle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjet(Objet $objet): self
+    {
+        if ($this->objets->removeElement($objet)) {
+            $objet->removeVinyle($this);
+        }
+
+        return $this;
     }
 
 }

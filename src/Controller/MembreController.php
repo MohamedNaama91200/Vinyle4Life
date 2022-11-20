@@ -50,7 +50,8 @@ class MembreController extends AbstractController
      * @Route("/{id}", name="app_membre_show", methods={"GET"})
      */
     public function show(Membre $membre): Response
-    {
+    {    
+        
         return $this->render('membre/show.html.twig', [
             'membre' => $membre,
         ]);

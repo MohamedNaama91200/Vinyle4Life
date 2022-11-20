@@ -12,6 +12,8 @@ use app\Entity\Inventaire;
 use app\Entity\Galerie;
 use app\Entity\User;
 use app\Entity\UserRepository;
+use App\Repository\GalerieRepository;
+
 
 use app\Entity\Membre;
 use app\Entity\Format;
@@ -41,6 +43,16 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
     public const Rock = 'Rock';
     public const Pop = 'Pop';
     public const Rap = 'Rap';
+
+    private function MembreDataGenerator()
+    {
+        // todo = [title, completed];
+        yield ['mohamed', 'mohamed@localhost'];
+        
+        yield['chris','chris@localhost'];
+
+        yield['imad', 'imad@localhost'];
+    }
 
 
 
@@ -97,9 +109,6 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($imad);
         $manager->flush();
         
-       $inventaire->setMembre($imad);
-       $manager->persist($inventaire);
-       $manager->flush();
         
        $lp = new Format();
        $lp->setLabel("LP");
@@ -159,9 +168,8 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
        $manager->flush();
 
        $galerie = new Galerie();
-       $galerie->setpubliee(False);
+       $galerie->setpubliee(True);
        $galerie->setDescription("Ma collec' de Vinyles");
-       $galerie->addCreateur($imad);
        $galerie->addObjet($album);
 
        $manager->persist($galerie);
@@ -180,19 +188,131 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
        $manager->persist($alum);
        $manager->flush();
 
-       foreach (self::MembreDataGenerator() as [$name, $useremail] ) {
-        $member = new Membre();
-        if ($useremail) {
-            $user = $manager->getRepository(User::class)->findOneByEmail($useremail);
-            $member->setUser($user);
-        }
-        $member->setName($name);
-        $manager->persist($member);
-    }
-    $manager->flush();
+     
       
        
+        $mohamed = new Membre();
+        $user = $manager->getRepository(User::class)->findOneByEmail('mohamed@localhost');
+        $mohamed->setUser($user);
+        $mohamed->setName('mohamed');
+        $mohamed->setDescription('mohamed');
+        $user->setMembre($mohamed);
 
+        $chris = new Membre();
+        $userc = $manager->getRepository(User::class)->findOneByEmail('chris@localhost');
+        $chris->setUser($userc);
+        $chris->setName('chris');
+        $chris->setDescription('chris');
+        $userc->setMembre($chris);
+
+
+       
+        
+        $manager->persist($mohamed);
+        $manager->flush();
+
+        $manager->persist($user);
+        $manager->flush();
+
+
+        
+        $manager->persist($mohamed);
+        $manager->flush();
+
+        $manager->persist($userc);
+        $manager->flush();
+
+
+
+      
+     // $mohameduser = $manager->getRepository(Membre::class)->findOneByName('mohamed');
+
+      $galerie->setCreator($mohamed);
+
+
+      $manager->persist($galerie);
+      $manager->flush();
+      
+      $usimad = $manager->getRepository(User::class)->findOneByEmail('imad@localhost');
+      $imad->setUser($usimad);
+      $usimad->setMembre($imad);
+
+      $manager->persist($imad);
+      $manager->flush();
+      
+
+      $manager->persist($usimad);
+      $manager->flush();
+
+
+      $g = new Galerie();
+      $g->setpubliee(False);
+      $g->setDescription("Pour les fans de Rap !");
+      $g->addObjet($alum);
+      $g->addObjet($album);
+      $g->setCreator($imad);
+
+      
+      
+
+      $manager->persist($g);
+      $manager->flush();
+
+      $imad->addShowroom($g);
+
+      $manager->persist($imad);
+      $manager->flush();
+      $mohamed->addShowroom($galerie);
+
+      $manager->persist($mohamed);
+      $manager->flush();
+
+
+      $ga = new Galerie();
+      $ga->setpubliee(True);
+      $ga->setDescription("Les pires sons !");
+      $ga->addObjet($alum);
+      $ga->addObjet($album);
+      $ga->setCreator($imad);   
+    
+      $manager->persist($ga);
+      $manager->flush(); 
+
+
+      $i = new Inventaire();
+      $i->setTitre("Inventaire de Momo");
+      $i->addobjet($alum);
+      $manager->persist($i);
+      $manager->flush(); 
+
+      $mohamed->addNom($i);
+      
+
+      $manager->persist($mohamed);
+      $manager->flush(); 
+
+      $aya = new Objet();
+        
+      $aya->setDescription("De l'art ! ");
+      $aya->setTitre("Djaja");
+      $aya->setNbDeTours(33);
+      $aya->setNeuf(True);
+      $aya->setAnnee(2018);
+      $aya->setAlbum("NAKAMURA");
+      $aya->setDuree("2m55");
+
+      $manager->persist($aya);
+      $manager->flush(); 
+
+      $galerie->addObjet($aya);
+
+      $manager->persist($galerie);
+      $manager->flush(); 
+
+      
+
+     
+}
 
 
 
@@ -212,7 +332,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
 
 
         //..
-    }
+    
 
     public function getDependencies()
     {

@@ -39,7 +39,7 @@ class GalerieRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
+//    /
 //     * @return Galerie[] Returns an array of Galerie objects
 //     */
 //    public function findByExampleField($value): array

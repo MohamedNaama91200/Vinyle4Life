@@ -29,19 +29,20 @@ class Galerie
      */
     private $publiee;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Membre::class, mappedBy="galerie")
-     */
-    private $createur;
+   
 
     /**
      * @ORM\ManyToMany(targetEntity=Objet::class, inversedBy="galeries")
      */
     private $objet;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Membre::class, inversedBy="showroom")
+     */
+    private $creator;
+
     public function __construct()
     {
-        $this->createur = new ArrayCollection();
         $this->objet = new ArrayCollection();
     }
 
@@ -74,35 +75,19 @@ class Galerie
         return $this;
     }
 
-    /**
-     * @return Collection<int, Membre>
-     */
-    public function getCreateur(): Collection
+  /*  public function getCreateur(): ?Membre
     {
         return $this->createur;
     }
 
-    public function addCreateur(Membre $createur): self
+    public function setCreateur(?Membre $createur): self
     {
-        if (!$this->createur->contains($createur)) {
-            $this->createur[] = $createur;
-            $createur->setGalerie($this);
-        }
+        $this->createur = $createur;
 
         return $this;
     }
-
-    public function removeCreateur(Membre $createur): self
-    {
-        if ($this->createur->removeElement($createur)) {
-            // set the owning side to null (unless already changed)
-            if ($createur->getGalerie() === $this) {
-                $createur->setGalerie(null);
-            }
-        }
-
-        return $this;
-    }
+*/
+    
 
     /**
      * @return Collection<int, Objet>
@@ -133,5 +118,17 @@ class Galerie
         $s .= $this->getDescription() .' ';
 
         return $s;
+    }
+
+    public function getCreator(): ?Membre
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?Membre $creator): self
+    {
+        $this->creator = $creator;
+
+        return $this;
     }
 }

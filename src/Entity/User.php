@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,6 +36,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Membre::class, cascade={"persist", "remove"})
+     */
+    private $membre;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Objet::class, mappedBy="user")
+     */
+    private $objet;
+
+    public function __construct()
+    {
+        $this->objet = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -122,5 +139,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getMembre(): ?Membre
+    {
+        return $this->membre;
+    }
+
+    public function setMembre(?Membre $membre): self
+    {
+        $this->membre = $membre;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Objet>
+     */
+    public function getObjet(): Collection
+    {
+        return $this->objet;
+    }
+
+    public function addObjet(Objet $objet): self
+    {
+        if (!$this->objet->contains($objet)) {
+            $this->objet[] = $objet;
+            $objet->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjet(Objet $objet): self
+    {
+        if ($this->objet->removeElement($objet)) {
+            $objet->removeUser($this);
+        }
+
+        return $this;
     }
 }

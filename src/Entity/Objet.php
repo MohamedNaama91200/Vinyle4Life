@@ -80,11 +80,23 @@ class Objet
      */
     private $galeries;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="objet")
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Membre::class, inversedBy="objets")
+     */
+    private $vinyles;
+
     public function __construct()
     {
         $this->format = new ArrayCollection();
         $this->style = new ArrayCollection();
         $this->galeries = new ArrayCollection();
+        $this->user = new ArrayCollection();
+        $this->vinyles = new ArrayCollection();
     }
 
   
@@ -289,6 +301,54 @@ class Objet
         if ($this->galeries->removeElement($galery)) {
             $galery->removeObjet($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->user->contains($user)) {
+            $this->user[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->user->removeElement($user);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Membre>
+     */
+    public function getVinyles(): Collection
+    {
+        return $this->vinyles;
+    }
+
+    public function addVinyle(Membre $vinyle): self
+    {
+        if (!$this->vinyles->contains($vinyle)) {
+            $this->vinyles[] = $vinyle;
+        }
+
+        return $this;
+    }
+
+    public function removeVinyle(Membre $vinyle): self
+    {
+        $this->vinyles->removeElement($vinyle);
 
         return $this;
     }
