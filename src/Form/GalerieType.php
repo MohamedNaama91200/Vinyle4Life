@@ -15,12 +15,12 @@ class GalerieType extends AbstractType
     {
         //dump($options);
         $galerie = $options['data'] ?? null;
-        $membre = $galerie->getCreateur();
+        $membre = $galerie->getCreator();
 
         $builder
             ->add('description')
             ->add('publiee')
-            ->add('createur', null, [
+            ->add('creator', null, [
                 'disabled'   => true,
             ])
             ->add('objet', null, [
