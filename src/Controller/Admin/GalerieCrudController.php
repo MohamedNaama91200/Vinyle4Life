@@ -31,7 +31,7 @@ class GalerieCrudController extends AbstractCrudController
 
     return [
         IdField::new('id')->hideOnForm(),
-        AssociationField::new('createur'),
+        AssociationField::new('creator'),
         BooleanField::new('publiee')
         ->onlyOnForms()
         ->hideWhenCreating(),

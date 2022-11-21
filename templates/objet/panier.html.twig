@@ -67,7 +67,10 @@
         
                 <td>
                     <a href="{{ path('app_objet_show', {'id': objet.id}) }}">show</a>
+                   <a href="{{ path('objet_mark', {'id': objet.id}) }}">Retirer du panier</a>
+                    {% if is_granted('ROLE_USER') %}
                     <a href="{{ path('app_objet_edit', {'id': objet.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
             {% endif %}
@@ -83,4 +86,5 @@
     </table>
 
     <a href="{{ path('app_objet_new') }}">Create new</a>
+
 {% endblock %}

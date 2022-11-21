@@ -171,7 +171,16 @@ public function objetShow(Galerie $galerie, Objet $objet): Response
           'galerie' => $galerie
       ]);
 }
-     
-    
+  
+    /**
+     * @Route("/objet/panier", name="objet_panier", methods="GET")
+     */
+    public function panier(ObjetRepository $objetRepository): Response
+    {
+        return $this->render('galerie/panier.html.twig', [
+            'objet' => $objetRepository->findAll(),
+        ]);
+    }
+
 
 }

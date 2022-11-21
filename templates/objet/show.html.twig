@@ -62,9 +62,14 @@
     <a href="{{ path('app_objet_edit', {'id': objet.id}) }}">edit</a>
      {% endif %}
 
+     
+
      <a href="{{ path('objet_mark', {'id': objet.id}) }}">Ajouter au panier</a>
 
+     {% if is_granted('ROLE_ADMIN') %}
 
     {{ include('objet/_delete_form.html.twig') }}
+     {% endif %}
+
 
 {% endblock %}
