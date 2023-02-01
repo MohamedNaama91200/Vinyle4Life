@@ -1,4 +1,4 @@
-# Vinyle4Life
+# Vinyle4Life :musical_note: :cd:
 
 Le projet : Vinyle4Life, un site pour les fans de vinyles crée par NAAMA Mohamed.
 
