@@ -12,11 +12,11 @@ Les 2 autres users sont : id : 'imad@localhost' mdp :'imad', et id :chris@localh
 
 Le lien du gitlab : https://gitlab.com/naamamohamedcpge/vinyl4life
 
-## Pour tester l'application localement, il faut  :
+## Pour tester l'application localement, il faut télécharger Docker 🐋 puis :
 
-* Télécharger Docker 🐳
 
-### Crée un docker-compose.yml et y coller ceci : 
+
+### Crée un docker-compose.yml dans le dossier courant et y coller ceci : 
 
 ```yaml
 version: '3'
